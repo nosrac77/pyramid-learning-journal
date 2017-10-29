@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Carson's Learning Journal - Code Fellows 401 Python 2017</title>
+    <meta name="description" content="Learning Journal Blog for Carson Newton">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/layout.css">
+    <link rel="stylesheet" href="styles/modules.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
+
+  </head>
+  <body>
+    <div id="all-container">
+      <div id="header-slogan-div">
+        <h1 id="header-h1">Carson's Learning Journal</h1>
+        <h5>Bringing my thoughts on stuff, junk, and tech.</h5>
+      </div>
+      <nav>
+        <ul>
+          <li class="nav-list"><a id="nav-home" class="nav-tabs" href="index.html">Home</a></li>
+          <li class="nav-list"><a id="nav-create" class="nav-tabs" href="new_entry.html">Create Entry</a></li>
+          <li class="nav-list"><a id="nav-edit" class="nav-tabs" href="edit_entry.html">Edit Entry</a></li>
+        </ul>
+      </nav>
+      <div class="data-contact-us">
+        <h2>Edit Entry</h2>
+        <div class="container-transparent">
+          <form id="contact-form" class="user-form">
+            <h4 class="form-header">Editing Time   <span class="icon-bubbles3"></span></h4>
+            <p class="section-text-medium">Changed your mind?</p>
+            <p class="section-text-small">See this is why you can't drink and journal. Couple shots of whiskey and you get all political. Well, me, sort out those typos or changes of heart here.</p>
+            <p class="user-form-text" type="Date:"><input id="contact-name" class="contact-control" placeholder="Date goes here..."></input></p>
+            <p class="user-form-text" type="Title:"><input id="contact-address" class="contact-control" placeholder="Title goes here..." type="email"></input></p>
+            <p class="user-form-text" type="Journal:"><textarea id="contact-message" placeholder="Type some stuff..."></textarea></p>
+            <button id="contact-send" class="user-form-button">Edit Entry</button>
+            <p class="contact-footer"><a id="contact-footer-email" href="mailto: carson.newton@outlook.com">carson.newton@outlook.com</a> | (253)324-3094</p>
+          </form>
+        </div>
+      </div>
+      <footer class="clearfix"><p id="footer-text">Carson Newton 2017 &copy; | All Rights Reserved</p></footer>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="scripts/app.js"></script>
+  </body>
+</html>
