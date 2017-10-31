@@ -1,0 +1,173 @@
+.nav-list {
+  display: inline-block;
+  background: -webkit-linear-gradient(-0, rgba(18, 18, 18, 1), #575757);
+	background: -o-linear-gradient(-0, rgba(18, 18, 18, 1), #575757);
+	background: -moz-linear-gradient(-0, rgba(18, 18, 18, 1), #575757);
+	background: linear-gradient(-0, rgba(18, 18, 18, 1), #575757);
+  border: 3px solid black;
+  border-radius: 3px;
+  width: 15.7%;
+  box-shadow: 6px 2px 40px -8px #000;
+  transition: all ease 0.3s;
+}
+
+.nav-tabs {
+  display: block;
+  color: white;
+  font-family: 'Ubuntu', sans-serif;
+  text-shadow: 1px 2px 15px black;
+  padding: 10% 17% 10% 14%;
+  transition: all ease 0.3s;
+}
+
+.nav-tabs:hover {
+  background: #e6e6e6;
+  color: #5a5a6e;
+  text-shadow: none;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 80%;
+}
+
+.data-home {
+  padding: 0 5% 0 5%;
+}
+
+.container-transparent {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 10px solid black;
+  border-radius: 5px;
+  padding: 5%;
+}
+
+.form-header {
+  border-bottom: 3px solid #404040;
+  padding-bottom: 4%;
+  margin-bottom: 8%;
+}
+
+.section-text-medium {
+  color: #404040;
+  font-size: 1.7em;
+  text-shadow: none;
+  margin: 2% 0% 4% 0%;
+}
+
+.section-text-small {
+  color: #404040;
+  font-size: 1.3em;
+  text-shadow: none;
+  margin: 2% 0% 4% 0%;
+}
+
+.clearfix {
+  clear: both;
+}
+
+.contact-control {
+  width: 100%;
+  box-sizing: border-box;
+  background: none;
+  outline: none;
+  resize: none;
+  border: 0;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 1em;
+  transition:all .3s;
+  border-bottom: 2px solid #bebed2;
+  padding: 1%;
+  margin-top: 3%;
+}
+
+.contact-control:focus {
+  border-bottom: 2px solid #78788c;
+}
+
+.user-form-text:before {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 1.5em;
+  content: attr(type);
+  display: block;
+  margin-top: 10%;
+  color: #292929;
+  text-shadow: none;
+}
+
+.user-form-button {
+  width: 35%;
+  font-size: 1em;
+  float: right;
+  padding: 2.5% 4%;
+  margin: 3% 0% 7% 0%;
+  font-family: 'Ubuntu', sans-serif;
+  border: 2px solid #78788c;
+  background: 0;
+  color: #5a5a6e;
+  cursor: pointer;
+  transition:all .3s
+}
+
+.user-form-button:hover {
+  background:#78788c;
+  color:#fff
+}
+
+.user-form-container {
+  display: inline-block;
+  width: 49.6%;
+}
+
+.user-form-container > .user-form-text:before {
+  display: inline-block;
+  color: black;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 1.3em;
+  text-shadow: none;
+  content: attr(type);
+  border-bottom: 2px solid #404040;
+  margin-top: 10%;
+  padding-bottom: 1.5%;
+}
+
+.contact-footer {
+  clear: right;
+  color: #5a5a5a;
+  font-size: 0.8em;
+  font-family: 'Ubuntu', sans-serif;
+  text-shadow: none;
+  margin-top: 15%;
+  text-align: center;
+}
+
+.user-form {
+  width: 80%;
+  height: 100%;
+  background: #e6e6e6;
+  border-radius: 8px;
+  box-shadow: 0 0 40px -10px #000;
+  margin: 10%;
+  padding: 6% 7% 1% 7%;
+  box-sizing: border-box;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+@media screen and (max-width: 450px) {
+  body {
+    background-color: black;
+  }
+}
+
+@media screen and (min-width: 451px) and (max-width: 900px) {
+  body {
+    background-color: black;
+  }
+}
+
+@media screen and (min-width: 901px) {
+  body {
+    background-color: black;
+  }
+}
