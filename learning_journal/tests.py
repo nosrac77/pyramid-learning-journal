@@ -1,65 +1,64 @@
-import unittest
-import transaction
-
-from pyramid import testing
+"""Functions that test server functions."""
+import pytest
 
 
-def dummy_request(dbsession):
-    return testing.DummyRequest(dbsession=dbsession)
+@pytest.fixture
+def dummy_request():
+    from pyramid import testing
+    return testing.DummyRequest()
 
 
-class BaseTest(unittest.TestCase):
-    def setUp(self):
-        self.config = testing.setUp(settings={
-            'sqlalchemy.url': 'sqlite:///:memory:'
-        })
-        self.config.include('.models')
-        settings = self.config.get_settings()
-
-        from .models import (
-            get_engine,
-            get_session_factory,
-            get_tm_session,
-            )
-
-        self.engine = get_engine(settings)
-        session_factory = get_session_factory(self.engine)
-
-        self.session = get_tm_session(session_factory, transaction.manager)
-
-    def init_database(self):
-        from .models.meta import Base
-        Base.metadata.create_all(self.engine)
-
-    def tearDown(self):
-        from .models.meta import Base
-
-        testing.tearDown()
-        transaction.abort()
-        Base.metadata.drop_all(self.engine)
+def test_list_view_returns_html(dummy_request):
+    """Function to test if list_view returns proper html file."""
+    from learning_journal.views.default import list_view
+    response = list_view(dummy_request)
+    assert response.content_type == 'text/html'
 
 
-class TestMyViewSuccessCondition(BaseTest):
-
-    def setUp(self):
-        super(TestMyViewSuccessCondition, self).setUp()
-        self.init_database()
-
-        from .models import MyModel
-
-        model = MyModel(name='one', value=55)
-        self.session.add(model)
-
-    def test_passing_view(self):
-        from .views.default import my_view
-        info = my_view(dummy_request(self.session))
-        self.assertEqual(info['one'].name, 'one')
-        self.assertEqual(info['project'], 'Learning Journal')
+def test_list_view_returns_200(dummy_request):
+    """Function to test if list_view returns proper html file."""
+    from learning_journal.views.default import list_view
+    response = list_view(dummy_request)
+    assert response.status_code == 200
 
 
-class TestMyViewFailureCondition(BaseTest):
+def test_detail_view_returns_html(dummy_request):
+    """Function to test if detail_view returns proper html file."""
+    from learning_journal.views.default import detail_view
+    response = detail_view(dummy_request)
+    assert response.content_type == 'text/html'
 
-    def test_failing_view(self):
-        from .views.default import my_view
-        info = my_view(dummy_request(self.session))
-        self.assertEqual(info.status_int, 500)
+
+def test_detail_view_returns_200(dummy_request):
+    """Function to test if detail_view returns proper html file."""
+    from learning_journal.views.default import detail_view
+    response = detail_view(dummy_request)
+    assert response.status_code == 200
+
+
+def test_create_view_returns_html(dummy_request):
+    """Function to test if create_view returns proper html file."""
+    from learning_journal.views.default import create_view
+    response = create_view(dummy_request)
+    assert response.content_type == 'text/html'
+
+
+def test_create_view_returns_200(dummy_request):
+    """Function to test if create_view returns proper html file."""
+    from learning_journal.views.default import create_view
+    response = create_view(dummy_request)
+    assert response.status_code == 200
+
+
+def test_update_view_returns_html(dummy_request):
+    """Function to test if update_view returns proper html file."""
+    from learning_journal.views.default import update_view
+    response = update_view(dummy_request)
+    assert response.content_type == 'text/html'
+
+
+def test_update_view_returns_200(dummy_request):
+    """Function to test if update_view returns proper html file."""
+    from learning_journal.views.default import update_view
+    response = update_view(dummy_request)
+    assert response.status_code == 200
