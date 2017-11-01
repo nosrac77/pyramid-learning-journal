@@ -1,9 +1,11 @@
 arrow==0.10.0
+beautifulsoup4==4.6.0
 binaryornot==0.4.4
 certifi==2017.7.27.1
 chardet==3.0.4
 click==6.7
 cookiecutter==1.6.0
+coverage==4.4.1
 decorator==4.1.2
 future==0.16.0
 hupper==1.0
@@ -13,7 +15,7 @@ ipython-genutils==0.2.0
 jedi==0.11.0
 Jinja2==2.9.6
 jinja2-time==0.2.0
--e git+https://github.com/nosrac77/pyramid-learning-journal.git@7239f1cbe512a9c42c88c60c8a441d8f871e9d5b#egg=learning_journal
+-e git+https://github.com/nosrac77/pyramid-learning-journal.git@0354c79ddbd830bbe9ff7b33d0ede745b14fa7db#egg=learning_journal
 Mako==1.0.7
 MarkupSafe==1.0
 parso==0.1.0
@@ -25,6 +27,7 @@ plaster-pastedeploy==0.4.1
 poyo==0.4.1
 prompt-toolkit==1.0.15
 ptyprocess==0.5.2
+py==1.4.34
 Pygments==2.2.0
 pyramid==1.9.1
 pyramid-debugtoolbar==4.3
@@ -33,6 +36,8 @@ pyramid-jinja2==2.7
 pyramid-mako==1.0.2
 pyramid-retry==0.5
 pyramid-tm==2.2
+pytest==3.2.3
+pytest-cov==2.5.1
 python-dateutil==2.6.1
 repoze.lru==0.7
 requests==2.18.4
@@ -47,6 +52,7 @@ venusian==1.1.0
 waitress==1.1.0
 wcwidth==0.1.7
 WebOb==1.7.3
+WebTest==2.0.29
 whichcraft==0.4.1
 zope.deprecation==4.3.0
 zope.interface==4.4.3
