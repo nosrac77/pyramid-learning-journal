@@ -6,9 +6,9 @@
     <meta name="description" content="Learning Journal Blog for Carson Newton">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="{{ request.static_path('learning_journal:static/base.css')}}">
-    <link rel="stylesheet" href="{{ request.static_path('learning_journal:static/modules.css')}}">
-    <link rel="stylesheet" href="{{ request.static_path('learning_journal:static/layout.css')}}">
+    <link rel="stylesheet" href="../static/base.css">
+    <link rel="stylesheet" href="../static/layout.css">
+    <link rel="stylesheet" href="../static/modules.css">
 
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
@@ -30,7 +30,7 @@
         <p id="testimonial-quote">"I'm far too drunk to taste this chicken."</p>
         <p id="testimonial-author">- Col. Sanders</p>
         <div class="data-entries-list">
-          <h2>{{ title }}</h2>
+          <h2>Journal Entries</h2>
           <div class="container-transparent">
             {% block content %}{% endblock %}
           </div>
@@ -38,5 +38,8 @@
       </div>
       <footer class="clearfix"><p id="footer-text">Carson Newton 2017 &copy; | All Rights Reserved</p></footer>
     </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
+    <script type="text/javascript" src="scripts/app.js"></script>
   </body>
 </html>
