@@ -1,0 +1,8 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+        <h4>{{ post.title }}</a></h4>
+        <p>{{ post.creation_date }}</p>
+        <p>{{ post.body }}</p>
+        <p><a href="{{ request.route_url('update', id=post.id) }}">Edit Entry</a></p>
+{% endblock %}
