@@ -40,12 +40,13 @@ def update_view(request):
         }
 
     if request.method == 'POST' and request.POST:
-        new_entry = Entry(
-            title=request.POST['title'],
-            body=request.POST['body'],
-            creation_date=request.POST['creation_date']
+        request.dbsession.query(Entry).filter_by(id=post_id).update(
+            {
+                "title": request.POST['title'],
+                "body": request.POST['body'],
+                "creation_date": request.POST['creation_date']
+            }
         )
-        request.dbsession.query(Entry).filter_by(id=post_id).update(new_entry)
         request.dbsession.flush()
         return HTTPFound(request.route_url('details'))
 
