@@ -24,10 +24,10 @@
     with open(os.path.join(STATIC, 'templates/public/edit_entry.html')) as f:
         return Response(f.read())**
 
-##### Pytest 2.6 & 3.6 Coverage Report - 100%
+##### Pytest 2.6 & 3.6 Coverage Report - 100%, 100%
 
 
-# Pyramid Learning Journal
+##[My Blog on Heroku](https://carson-tech-blog-fun-times.herokuapp.com/)
 
 ## Step 2
 
@@ -68,4 +68,4 @@ def update_view(request):
         "post": post
     }**
 
-##### Pytest 2.6 & 3.6 Coverage Report - 100%
+##### Pytest 2.6 & 3.6 Coverage Report - 100%, 100%

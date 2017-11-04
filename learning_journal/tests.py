@@ -76,7 +76,8 @@ def test_create_view_returns_title(dummy_request):
 
 def test_update_view_returns_title(dummy_request):
     """Update view response has file content."""
-    from learning_journal.views.default import create_view
+    from learning_journal.views.default import update_view
+    dummy_request.matchdict['id'] = 1
     request = dummy_request
-    response = create_view(request)
-    assert response['title'] == 'Create'
+    response = update_view(request)
+    assert response['title'] == 'Update'
