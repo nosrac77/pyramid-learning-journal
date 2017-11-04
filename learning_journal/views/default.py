@@ -45,7 +45,7 @@ def update_view(request):
             body=request.POST['body'],
             creation_date=request.POST['creation_date']
         )
-        request.dbsession.query(Entry).filter_by(post_id).update(new_entry)
+        request.dbsession.query(Entry).filter_by(id=post_id).update(new_entry)
         request.dbsession.flush()
         return HTTPFound(request.route_url('details'))
 
