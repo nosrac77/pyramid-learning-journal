@@ -45,7 +45,7 @@ def update_view(request):
         post.body = request.POST['body'] = request.POST['body']
         request.dbsession.add(post)
         request.dbsession.flush()
-        return HTTPFound(request.route_url('details'))
+        return HTTPFound(request.route_url('details', id=post_id))
 
 
 @view_config(route_name="create", renderer="learning_journal:templates/create.jinja2")
