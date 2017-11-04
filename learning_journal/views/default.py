@@ -27,7 +27,7 @@ def detail_view(request):
     }
 
 
-@view_config(route_name="create", renderer="learning_journal:templates/create.jinja2")
+@view_config(route_name="update", renderer="learning_journal:templates/update.jinja2")
 def update_view(request):
     """Function that generates single journal entry."""
     from pyramid.httpexceptions import HTTPFound
@@ -50,7 +50,7 @@ def update_view(request):
         return HTTPFound(request.route_url('details'))
 
 
-@view_config(route_name="update", renderer="learning_journal:templates/update.jinja2")
+@view_config(route_name="create", renderer="learning_journal:templates/create.jinja2")
 def create_view(request):
     """Function that updates existing view."""
     from pyramid.httpexceptions import HTTPFound
