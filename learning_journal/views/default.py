@@ -36,7 +36,7 @@ def create_view(request):
             "title": "Create"
         }
 
-    if request.method == 'POST':
+    if request.method == 'POST' and request.POST:
         new_entry = Entry(
             title=request.POST['title'],
             body=request.POST['body'],
