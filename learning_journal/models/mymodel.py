@@ -1,26 +1,21 @@
 from sqlalchemy import (
     Column,
     Unicode,
-    Integer,
-    Text,
-    DateTime
+    Integer
 )
 
 from .meta import Base
-from datetime import datetime
 
 
-class Journal(Base):
-    __tablename__ = 'journals'
+class Entry(Base):
+    """Create an instance of the Entry class, which is a model object used to
+    fill Postgres database."""
+
+    __tablename__ = 'entries'
     id = Column(Integer, primary_key=True)
     title = Column(Unicode)
-    creation_date = Column(DateTime)
-    body = Column(Text)
+    body = Column(Unicode)
+    creation_date = Column(Unicode)
 
-    def __init__(self, *args, **kwargs):
-        """Modify instance of Journal class."""
-        super(Journal, self).__init__(*args, **kwargs):
-            self.creation_date = datetime.now()
-
-
-# Index('my_index', MyModel.name, unique=True, mysql_length=255)
+    def __repr__(self):
+        return '<Entry: {}>.format(self.title)'

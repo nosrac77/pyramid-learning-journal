@@ -1,11 +1,65 @@
 """Functions that test server functions."""
 import pytest
+from pyramid import testing
+import transaction
+from learning_journal.models import (
+    Entry,
+    get_tm_session
+)
+from learning_journal.models.meta import Base
 
 
 @pytest.fixture
-def dummy_request():
-    from pyramid import testing
-    return testing.DummyRequest()
+def configuration(request):
+    """Set up a Configurator instance.
+
+    This Configurator instance sets up a pointer to the location of the
+        database.
+    It also includes the models from your app's model package.
+    Finally it tears everything down, including the in-memory SQLite database.
+
+    This configuration will persist for the entire duration of your PyTest run.
+    """
+    config = testing.setUp(settings={
+        'sqlalchemy.url': 'postgres://postgres:Skrillexfan7@localhost:5432/test_db'
+    })
+    config.include("learning_journal.models")
+
+    def teardown():
+        testing.tearDown()
+
+    request.addfinalizer(teardown)
+    return config
+
+
+@pytest.fixture
+def db_session(configuration, request):
+    """Create a session for interacting with the test database.
+
+    This uses the dbsession_factory on the configurator instance to create a
+    new database session. It binds that session to the available engine
+    and returns a new session for every call of the dummy_request object.
+    """
+    SessionFactory = configuration.registry["dbsession_factory"]
+    session = SessionFactory()
+    engine = session.bind
+    Base.metadata.create_all(engine)
+
+    def teardown():
+        session.transaction.rollback()
+        Base.metadata.drop_all(engine)
+
+    request.addfinalizer(teardown)
+    return session
+
+
+@pytest.fixture
+def dummy_request(db_session):
+    """Instantiate a fake HTTP Request, complete with a database session.
+    This is a function-level fixture, so every new request will have a
+    new database session.
+    """
+    return testing.DummyRequest(dbsession=db_session)
 
 
 @pytest.fixture
@@ -27,51 +81,11 @@ def testapp():
     return TestApp(app)
 
 
-def test_layout_root_has_text_in_footer(testapp):
-    """Test that the contents of the root page contains <footer>."""
-    response = testapp.get('/', status=200)
-    html = response.html
-    print(html.find("footer"))
-    assert 'Carson Newton' in html.find("footer").text
-
-
-def test_root_content_contains_h4(testapp):
-    """Test that the contents of the root page contains as many <footer>."""
-    from learning_journal.data.journal_entries import JOURNAL_ENTRIES
-    response = testapp.get('/', status=200)
-    html = response.html
-    assert len(JOURNAL_ENTRIES) == len(html.findAll("h4"))
-
-
-def test_reponse_to_detail_view_returns_proper_h4_title(testapp):
-    """Test that the contents of the root page contains as many <footer>."""
-    response = testapp.get('/journal/1', status=200)
-    print(response)
-    assert response.html.find('h4').text == 'Learning Journal Day 1'
-
-
 def test_list_view_returns_html(dummy_request):
     """Function to test if list_view returns proper list of dictionaries."""
     from learning_journal.views.default import list_view
     response = list_view(dummy_request)
     assert isinstance(response, dict)
-
-
-def test_list_view_returns_proper_amount_of_content(dummy_request):
-    """Home view response has file content."""
-    from learning_journal.data.journal_entries import JOURNAL_ENTRIES
-    from learning_journal.views.default import list_view
-    request = dummy_request
-    response = list_view(request)
-    assert len(response['journals']) == len(JOURNAL_ENTRIES)
-
-
-def test_create_view_returns_title(dummy_request):
-    """Create view response has file content."""
-    from learning_journal.views.default import create_view
-    request = dummy_request
-    response = create_view(request)
-    assert response['title'] == 'Create'
 
 
 def test_update_view_returns_title(dummy_request):
@@ -80,3 +94,43 @@ def test_update_view_returns_title(dummy_request):
     request = dummy_request
     response = create_view(request)
     assert response['title'] == 'Create'
+
+
+def test_response_is_instance_of_dict(dummy_request):
+    """Function that tests database gets populated with model object."""
+    from learning_journal.views.default import list_view
+    new_entry = Entry(
+        title='Learning Journal Fun Times',
+        body='Today I learned all of the things',
+        creation_date='November 2nd, 2017 7:47pm'
+    )
+    dummy_request.dbsession.add(new_entry)
+    dummy_request.dbsession.commit()
+    response = list_view(dummy_request)
+    assert isinstance(response, dict)
+
+
+def test_model_gets_added_to_test_database(db_session):
+    assert len(db_session.query(Entry).all()) == 0
+    model = Entry(
+        title='Learning Journal Fun Times',
+        body='Today I learned all of the things',
+        creation_date='November 2nd, 2017 7:47pm'
+    )
+    db_session.add(model)
+    assert len(db_session.query(Entry).all()) == 1
+
+
+def test_list_view_returns_correct_size_of_test_database(dummy_request):
+    """Home view response matches database count."""
+    from learning_journal.views.default import list_view
+    response = list_view(dummy_request)
+    query = dummy_request.dbsession.query(Entry)
+    assert len(response['entries']) == query.count()
+
+
+def test_list_view_returns_empty_when_test_database_is_empty(dummy_request):
+    """List view returns nothing when there is no data."""
+    from learning_journal.views.default import list_view
+    response = list_view(dummy_request)
+    assert len(response['entries']) == 0
