@@ -40,7 +40,7 @@ def update_view(request):
         }
 
     if request.method == 'POST' and request.POST:
-        request.dbsession.query(Entry).filter_by(id=post_id).update(
+        request.dbsession.query(Entry).get(post_id).update(
             {
                 "title": request.POST['title'],
                 "body": request.POST['body'],
