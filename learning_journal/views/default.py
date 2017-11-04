@@ -30,9 +30,20 @@ def detail_view(request):
 @view_config(route_name="create", renderer="learning_journal:templates/create.jinja2")
 def create_view(request):
     """Function that generates single journal entry."""
-    return {
-        "title": "Create"
-    }
+    from pyramid.httpexceptions import HTTPFound
+    if request.method == 'GET':
+        return {
+            "title": "Create"
+        }
+
+    if request.method == 'POST':
+        new_entry = Entry(
+            title=request.POST['title'],
+            body=request.POST['body'],
+            creation_date=request.POST['creation_date']
+        )
+        request.dbsession.add(new_entry)
+        return HTTPFound(request.route_url('home'))
 
 
 @view_config(route_name="update", renderer="learning_journal:templates/update.jinja2")
