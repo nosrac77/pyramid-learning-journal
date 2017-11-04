@@ -32,18 +32,21 @@ def update_view(request):
     """Function that generates single journal entry."""
     from pyramid.httpexceptions import HTTPFound
     post_id = int(request.matchdict["id"])
-    post = request.dbsession.query(Entry).get(post_id)
     if request.method == 'GET':
+        post = request.dbsession.query(Entry).get(post_id)
         return {
            "title": "Update",
            "post": post
         }
 
     if request.method == 'POST' and request.POST:
-        post.title = request.POST['title']
-        post.creation_date = request.POST['creation_date']
-        post.body = request.POST['body'] = request.POST['body']
-        request.dbsession.add(post)
+        request.dbsession.query(Entry).filter_by(id=post_id).update(
+            {
+                "title": request.POST['title'],
+                "body": request.POST['body'],
+                "creation_date": request.POST['creation_date']
+            }
+        )
         request.dbsession.flush()
         return HTTPFound(request.route_url('details', id=post_id))
 
