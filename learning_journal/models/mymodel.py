@@ -1,18 +1,21 @@
 from sqlalchemy import (
     Column,
-    Index,
-    Integer,
-    Text,
+    Unicode,
+    Integer
 )
 
 from .meta import Base
 
 
-class MyModel(Base):
-    __tablename__ = 'models'
+class Entry(Base):
+    """Create an instance of the Entry class, which is a model object used to
+    fill Postgres database."""
+
+    __tablename__ = 'entries'
     id = Column(Integer, primary_key=True)
-    name = Column(Text)
-    value = Column(Integer)
+    title = Column(Unicode)
+    body = Column(Unicode)
+    creation_date = Column(Unicode)
 
-
-Index('my_index', MyModel.name, unique=True, mysql_length=255)
+    def __repr__(self):
+        return '<Entry: {}>.format(self.title)'
