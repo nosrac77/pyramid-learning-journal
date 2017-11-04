@@ -28,16 +28,18 @@ def detail_view(request):
 
 
 @view_config(route_name="create", renderer="learning_journal:templates/create.jinja2")
-def create_view(request):
+def update_view(request):
     """Function that generates single journal entry."""
     from pyramid.httpexceptions import HTTPFound
+    post_id = int(request.matchdict["id"])
     if request.method == 'GET':
+        post = request.dbsession.query(Entry).get(post_id)
         return {
-            "title": "Create"
+           "title": "Update",
+           "post": post
         }
 
     if request.method == 'POST' and request.POST:
-        post_id = int(request.matchdict["id"])
         new_entry = Entry(
             title=request.POST['title'],
             body=request.POST['body'],
@@ -49,12 +51,12 @@ def create_view(request):
 
 
 @view_config(route_name="update", renderer="learning_journal:templates/update.jinja2")
-def update_view(request):
+def create_view(request):
     """Function that updates existing view."""
     from pyramid.httpexceptions import HTTPFound
     if request.method == 'GET':
         return {
-            "title": "Update"
+            "title": "Create"
         }
 
     if request.method == 'POST' and request.POST:

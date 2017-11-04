@@ -2,12 +2,12 @@
 
 {% block content %}
     <form id="contact-form" class="user-form" method='post'>
-        <h4 class="form-header">Editing Time   <span class="icon-bubbles3"></span></h4>
+        <h4 class="form-header">Editing Time</h4>
         <p class="section-text-medium">Changed your mind?</p>
         <p class="section-text-small">See this is why you can't drink and journal. Couple shots of whiskey and you get all political. Well, me, sort out those typos or changes of heart here.</p>
-        <p class="user-form-text" type="Date:"><input id="contact-name" class="contact-control" placeholder="{{ post.creation_date }}" name='creation_date' required></input></p>
-        <p class="user-form-text" type="Title:"><input id="contact-address" class="contact-control" placeholder="{{ post.title }}" name='title' required></input></p>
-        <p class="user-form-text" type="Journal:"><textarea id="contact-message" placeholder="{{ post.body }}" name='body' required></textarea></p>
+        <p class="user-form-text" type="Date:"><input id="contact-name" class="contact-control" placeholder="{{ post.creation_date }}" name="creation_date" required></input></p>
+        <p class="user-form-text" type="Title:"><input id="contact-address" class="contact-control" placeholder="{{ post.title }}" name="title" required></input></p>
+        <p class="user-form-text" type="Journal:"><textarea id="contact-message" placeholder="{{ post.body }}" name="body" required></textarea></p>
         <button id="contact-send" class="user-form-button" type=submit>Edit Entry</button>
         <p class="contact-footer"><a id="contact-footer-email" href="mailto: carson.newton@outlook.com">carson.newton@outlook.com</a> | (253)324-3094</p>
       </form>
