@@ -37,6 +37,27 @@ def create_view(request):
         }
 
     if request.method == 'POST' and request.POST:
+        post_id = int(request.matchdict["id"])
+        new_entry = Entry(
+            title=request.POST['title'],
+            body=request.POST['body'],
+            creation_date=request.POST['creation_date']
+        )
+        request.dbsession.query(Entry).filter_by(post_id).update(new_entry)
+        request.dbsession.flush()
+        return HTTPFound(request.route_url('details'))
+
+
+@view_config(route_name="update", renderer="learning_journal:templates/update.jinja2")
+def update_view(request):
+    """Function that updates existing view."""
+    from pyramid.httpexceptions import HTTPFound
+    if request.method == 'GET':
+        return {
+            "title": "Update"
+        }
+
+    if request.method == 'POST' and request.POST:
         new_entry = Entry(
             title=request.POST['title'],
             body=request.POST['body'],
@@ -44,14 +65,3 @@ def create_view(request):
         )
         request.dbsession.add(new_entry)
         return HTTPFound(request.route_url('home'))
-
-
-@view_config(route_name="update", renderer="learning_journal:templates/update.jinja2")
-def update_view(request):
-    """Function that updates existing view."""
-    post_id = int(request.matchdict["id"])
-    post = request.dbsession.query(Entry).get(post_id)
-    return {
-        "title": "Update",
-        "post": post
-    }
