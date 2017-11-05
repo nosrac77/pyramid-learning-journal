@@ -3,8 +3,8 @@
 ###### In this file I outline my thought process surrounding how to test my view functions and model objects. Below my functions are lists of ways I envision testing them, as well as what I'll be testing for.
 
 ## Tests for detail_view function
-
-**@view_config(route_name="details", renderer="learning_journal:templates/details.jinja2")
+```python
+@view_config(route_name="details", renderer="learning_journal:templates/details.jinja2")
 def detail_view(request):
     """Function that generates single journal entry."""
     from pyramid.httpexceptions import HTTPNotFound
@@ -15,8 +15,8 @@ def detail_view(request):
     return {
         "title": "Details",
         "post": post
-    }**
-
+    }
+```
 Since I know this function returns exactly what it's always returned, I can test for some of the same things:
 
 * Returns dictionary with a title of "Details"
@@ -27,16 +27,16 @@ Since I know this function returns exactly what it's always returned, I can test
 
 
 ## Tests for list_view function
-
-**@view_config(route_name="home", renderer="learning_journal:templates/journal_entries.jinja2")
+```python
+@view_config(route_name="home", renderer="learning_journal:templates/journal_entries.jinja2")
 def list_view(request):
     """Function that generates list of journal entries."""
     entries = request.dbsession.query(Entry).all()
     return {
         'title': 'All Entries',
         'entries': entries
-    }**
-
+    }
+```
 Since I know this function returns exactly what it's always returned, I can test for some of the same things:
 
 * Returns dictionary with a title of "All Entries"
@@ -46,8 +46,8 @@ Since I know this function returns exactly what it's always returned, I can test
 
 
 ## Tests for update_view function
-
-**@view_config(route_name="update", renderer="learning_journal:templates/update.jinja2")
+```python
+@view_config(route_name="update", renderer="learning_journal:templates/update.jinja2")
 def update_view(request):
     """Function that generates single journal entry."""
     from pyramid.httpexceptions import HTTPFound
@@ -68,8 +68,8 @@ def update_view(request):
             }
         )
         request.dbsession.flush()
-        return HTTPFound(request.route_url('details', id=post_id))**
-
+        return HTTPFound(request.route_url('details', id=post_id))
+```
 Since this function is a new addition, I'll have to test for some new things as well as common things all view functions share:
 
 **If method is GET**
@@ -87,8 +87,8 @@ Since this function is a new addition, I'll have to test for some new things as 
 
 
 ## Tests for create_view function
-
-**@view_config(route_name="create", renderer="learning_journal:templates/create.jinja2")
+```python
+@view_config(route_name="create", renderer="learning_journal:templates/create.jinja2")
 def create_view(request):
     """Function that updates existing view."""
     from pyramid.httpexceptions import HTTPFound
@@ -104,8 +104,8 @@ def create_view(request):
             creation_date=request.POST['creation_date']
         )
         request.dbsession.add(new_entry)
-        return HTTPFound(request.route_url('home'))**
-
+        return HTTPFound(request.route_url('home'))
+```
 Since this function has some new functionality, I'll have to test for some new things as well as common things all view functions share:
 
 **If method is GET**
@@ -123,8 +123,8 @@ Since this function has some new functionality, I'll have to test for some new t
 
 * For the **detail_view** function - I didn't know how to test for raising HTTPNotFound if the id didn't match any existing database model object. I tried using a with pytest.raises assertion, as well as a try/except, to no avail.
 * For the **create_view** and **update_view** functions - I didn't know how to test for the HTTPFound redirect. I saw multiple descriptions of how to do it in the class notes and tried to emulate them. Examples belows.
-
-**def test_new_expense_redirects_to_home(testapp, empty_db):
+```python
+def test_new_expense_redirects_to_home(testapp, empty_db):
     """When redirection is followed, result is home page."""
     new_entry = {
         "title": 'New Entry',
@@ -133,10 +133,10 @@ Since this function has some new functionality, I'll have to test for some new t
     }
     response = testapp.post('/create', new_entry)
     home_path = testapp.app.routes_mapper.get_route('home').path
-    assert response.location == 'https://carson-tech-blog-fun-times.herokuapp.com/' + home_path**
+    assert response.location == 'https://carson-tech-blog-fun-times.herokuapp.com/' + home_path
 
 
-**def test_new_entry_redirection_lands_on_home(testapp, empty_db):
+def test_new_entry_redirection_lands_on_home(testapp, empty_db):
     """When redirection is followed, result is home page."""
     new_entry = {
         "title": 'New Entry',
@@ -146,6 +146,6 @@ Since this function has some new functionality, I'll have to test for some new t
     response = testapp.post('https://carson-tech-blog-fun-times.herokuapp.com/create', new_entry)
     next_response = response.follow()
     home_response = testapp.get('/')
-    assert next_response.text == home_response.text**
-
+    assert next_response.text == home_response.text
+```
 After testing them multiple ways, I decided to remove the empty_db fixture and remove the tests altogether.
