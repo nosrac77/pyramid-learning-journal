@@ -48,7 +48,7 @@ def update_view(request):
             }
         )
         request.dbsession.flush()
-        return HTTPFound(request.route_url('details', id=post_id))
+        # return HTTPFound(request.route_url('details', id=post_id))
 
 
 @view_config(route_name="create", renderer="learning_journal:templates/create.jinja2")
@@ -68,3 +68,4 @@ def create_view(request):
         )
         request.dbsession.add(new_entry)
         return HTTPFound(request.route_url('home'))
+    return {}
