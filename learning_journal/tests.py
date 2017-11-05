@@ -202,3 +202,43 @@ def test_list_view_return_Entry_instance_and_only_two_values(dummy_request):
     assert str(response['entries']) == '[<Entry: {}>.format(self.title)]'
     assert response['entries'][0].title == 'Test'
     assert response['entries'][0].creation_date == '01/23/45'
+
+
+def test_create_view_post_empty_is_empty_dict(dummy_request):
+    """POST requests without data should return an empty dictionary."""
+    from learning_journal.views.default import create_view
+    dummy_request.method = "POST"
+    response = create_view(dummy_request)
+    assert response == {}
+
+
+def test_update_view_replaces_existing_Entry_and_doesnt_alter_list_len(dummy_request):
+    """Update view response has file content."""
+    from learning_journal.views.default import update_view, detail_view
+    assert len(dummy_request.dbsession.query(Entry).all()) == 0
+    first_entry = Entry(
+        title='Test',
+        creation_date='01/23/45',
+        body='Test should pass!'
+    )
+    dummy_request.dbsession.add(first_entry)
+    dummy_request.matchdict['id'] = 1
+    request = dummy_request
+    prev_entry = detail_view(request)
+    assert len(dummy_request.dbsession.query(Entry).all()) == 1
+    assert prev_entry['post'].title == 'Test'
+    assert prev_entry['post'].id == 1
+    dummy_request.method = 'POST'
+    update_entry = {
+        "title": 'Updated',
+        "creation_date": '99/99/99',
+        "body": 'This entry should replace the other one!'
+    }
+    dummy_request.POST = update_entry
+    update_view(dummy_request)
+    response = dummy_request.dbsession.query(Entry).get(1)
+    assert len(dummy_request.dbsession.query(Entry).all()) == 1
+    assert str(response) == '<Entry: {}>.format(self.title)'
+    assert response.title == 'Updated'
+    assert response.creation_date == '99/99/99'
+    assert response.body == 'This entry should replace the other one!'

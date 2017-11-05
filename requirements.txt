@@ -15,7 +15,6 @@ ipython-genutils==0.2.0
 jedi==0.11.0
 Jinja2==2.9.6
 jinja2-time==0.2.0
--e git+https://github.com/nosrac77/pyramid-learning-journal.git@0354c79ddbd830bbe9ff7b33d0ede745b14fa7db#egg=learning_journal
 Mako==1.0.7
 MarkupSafe==1.0
 parso==0.1.0
@@ -26,6 +25,7 @@ plaster==1.0
 plaster-pastedeploy==0.4.1
 poyo==0.4.1
 prompt-toolkit==1.0.15
+psycopg2==2.7.3.2
 ptyprocess==0.5.2
 py==1.4.34
 Pygments==2.2.0
