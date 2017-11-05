@@ -1,10 +1,10 @@
 """Functions that test server functions."""
 import pytest
 from pyramid import testing
-import transaction
+# import transaction
 from learning_journal.models import (
     Entry,
-    get_tm_session
+    # get_tm_session
 )
 from learning_journal.models.meta import Base
 
