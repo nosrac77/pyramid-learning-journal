@@ -25,6 +25,7 @@ def update_view(request):
         return Response(f.read())
 ```
 
+
 ##### Pytest 2.6 & 3.6 Coverage Report - 100%, 100%
 
 
