@@ -24,6 +24,7 @@
     with open(os.path.join(STATIC, 'templates/public/edit_entry.html')) as f:
         return Response(f.read())**
 
+
 ##### Pytest 2.6 & 3.6 Coverage Report - 100%, 100%
 
 
