@@ -1,0 +1,9 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+    <form method='POST'>
+        <label>Username<input name='username' placeholder='Username' type='text'></label>
+        <label>Password<input name='password' placeholder='Password' type='password'></label>
+        <button id="contact-send" class="user-form-button" type='submit'>Login</button>
+    </form>
+{% endblock %}
