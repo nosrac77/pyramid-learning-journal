@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Carson's Learning Journal - Code Fellows 401 Python 2017</title>
+    <meta name="description" content="Learning Journal Blog for Carson Newton">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{{ request.static_path('learning_journal:static/base.css')}}">
+    <link rel="stylesheet" href="{{ request.static_path('learning_journal:static/modules.css')}}">
+    <link rel="stylesheet" href="{{ request.static_path('learning_journal:static/layout.css')}}">
+
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
+
+  </head>
+  <body>
+    <div id="all-container">
+      <div id="header-slogan-div">
+        <h1 id="header-h1">Carson's Learning Journal</h1>
+        <h5>Bringing my thoughts on stuff, junk, and tech.</h5>
+      </div>
+      <nav>
+        <ul>
+          <li class="nav-list"><a id="nav-home" class="nav-tabs" href="{{ request.route_url('home')}}">Home</a></li>
+          <li class="nav-list"><a id="nav-create" class="nav-tabs" href="{{ request.route_url('create')}}">Create Entry</a></li>
+        </ul>
+      </nav>
+      <div class="data-home">
+        <p id="testimonial-quote">"I'm far too drunk to taste this chicken."</p>
+        <p id="testimonial-author">- Col. Sanders</p>
+        <div class="data-entries-list">
+          <h2>{{ title }}</h2>
+          <div class="container-transparent">
+            {% block content %}{% endblock %}
+          </div>
+        </div>
+      </div>
+      <footer class="clearfix"><p id="footer-text">Carson Newton 2017 &copy; | All Rights Reserved</p></footer>
+    </div>
+  </body>
+</html>

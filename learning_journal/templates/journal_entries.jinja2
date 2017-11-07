@@ -1,0 +1,8 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+    {% for entry in entries | reverse %}
+        <h4><a href="{{ request.route_url('details', id=entry.id) }}" id="details">{{ entry.title }}</a></h4>
+        <p>{{ entry.creation_date }}</p>
+    {% endfor %}
+{% endblock %}
