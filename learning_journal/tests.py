@@ -24,6 +24,7 @@ def configuration(request):
         'sqlalchemy.url': 'postgres://postgres:Skrillexfan7@localhost:5432/test_db'
     })
     config.include("learning_journal.models")
+    config.include("learning_journal.routes")
 
     def teardown():
         testing.tearDown()
@@ -73,7 +74,8 @@ def testapp():
         """
         config = Configurator()
         config.include('pyramid_jinja2')
-        config.include('.routes')
+        config.include('learning_journal.routes')
+        config.include('learning_journal.security')
         config.scan()
         return config.make_wsgi_app()
 
@@ -212,7 +214,7 @@ def test_create_view_post_empty_is_empty_dict(dummy_request):
     assert response == {}
 
 
-def test_update_view_replaces_existing_Entry_and_doesnt_alter_list_len(dummy_request):
+def test_update_view_replaces_existing_Entry_and_doesnt_alter_list_len(dummy_request, db_session):
     """Update view response has file content."""
     from learning_journal.views.default import update_view, detail_view
     assert len(dummy_request.dbsession.query(Entry).all()) == 0
@@ -242,3 +244,46 @@ def test_update_view_replaces_existing_Entry_and_doesnt_alter_list_len(dummy_req
     assert response.title == 'Updated'
     assert response.creation_date == '99/99/99'
     assert response.body == 'This entry should replace the other one!'
+
+
+def test_create_view_adds_new_Entry_object_to_database(dummy_request, db_session):
+    """Update view response has file content."""
+    from learning_journal.views.default import create_view
+    assert len(dummy_request.dbsession.query(Entry).all()) == 0
+    first_entry = {
+        'title': 'Test',
+        'creation_date': '01/23/45',
+        'body': 'Test should pass!'
+    }
+    dummy_request.method = 'POST'
+    dummy_request.POST = first_entry
+    create_view(dummy_request)
+    response = dummy_request.dbsession.query(Entry).get(1)
+    assert len(dummy_request.dbsession.query(Entry).all()) == 1
+    assert str(response) == '<Entry: {}>.format(self.title)'
+    assert response.title == 'Test'
+    assert response.creation_date == '01/23/45'
+    assert response.body == 'Test should pass!'
+
+
+def test_login_return_200_if_proper_credentials(testapp):
+    """Function that tests if login view returns 200 if proper parameters are
+    given."""
+    response = testapp.post('/login', params={'username': 'AUTH_USERNAME',
+                                              'password': 'AUTH_PASSWORD'})
+    assert response.status_code == 200
+
+
+def test_detail_and_update_return_403_when_user_logged_out(testapp):
+    """Function to test if creation/update returns 403 if user logged out."""
+    assert testapp.get('/journal/new-entry', status=403)
+    assert testapp.get('/journal/1/edit-entry', status=403)
+
+
+def test_logout_view(testapp):
+    """Function to test if creation/update returns 403 if user logged out."""
+    assert testapp.get('/journal/new-entry', status=403)
+    assert testapp.get('/journal/1/edit-entry', status=403)
+
+
+#  when testing csrf stuff! token = response.html.find('input', {'name': 'csrf_token'}).attrs['name'] then include a 'csrf_token' key with a value of token (thing you defined above) in the response dictionary! The token MUST be included in every post request!

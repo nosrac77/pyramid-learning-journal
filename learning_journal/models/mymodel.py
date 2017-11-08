@@ -1,6 +1,6 @@
 from sqlalchemy import (
     Column,
-    Unicode,
+    String,
     Integer
 )
 
@@ -13,9 +13,9 @@ class Entry(Base):
 
     __tablename__ = 'entries'
     id = Column(Integer, primary_key=True)
-    title = Column(Unicode)
-    body = Column(Unicode)
-    creation_date = Column(Unicode)
+    title = Column(String(convert_unicode=True))
+    body = Column(String(convert_unicode=True))
+    creation_date = Column(String(convert_unicode=True))
 
     def __repr__(self):
         return '<Entry: {}>.format(self.title)'

@@ -50,7 +50,7 @@ def update_view(request):
             }
         )
         request.dbsession.flush()
-        return HTTPFound(request.route_url('details', id=post_id))
+        return HTTPFound(location=request.route_url('details', id=post_id))
 
 
 @view_config(route_name="create", renderer="learning_journal:templates/create.jinja2", permission="secret")
@@ -69,14 +69,14 @@ def create_view(request):
             creation_date=request.POST['creation_date']
         )
         request.dbsession.add(new_entry)
-        return HTTPFound(request.route_url('home'))
+        return HTTPFound(location=request.route_url('home'))
     return {}
 
 
 @view_config(route_name="login",
-             renderer="learning_journal:templates/login.jinja2",)
+             renderer="learning_journal:templates/login.jinja")
 def login_view(request):
-    """."""
+    """Allow authenticated users access to certain pages."""
     from pyramid.httpexceptions import HTTPFound
     if request.method == 'POST':
         username = request.POST['username']
@@ -89,7 +89,7 @@ def login_view(request):
 
 @view_config(route_name="logout")
 def logout_view(request):
-    """."""
+    """Make previously authenticated users unable to access to certain pages."""
     from pyramid.httpexceptions import HTTPFound
     headers = forget(request)
     return HTTPFound(request.route_url('home'), headers=headers)

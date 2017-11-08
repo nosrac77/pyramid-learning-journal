@@ -1,5 +1,8 @@
 # Pyramid Learning Journal
 
+**Authors:** [Carson Newton](https://github.com/nosrac77) and [H. Cody Dibble](https://github.com/hcodydibble)
+### [My Blog on Heroku](https://carson-tech-blog-fun-times.herokuapp.com/)
+
 ## Step 1
 
 ### Views/Routes Used:
@@ -27,9 +30,6 @@ def update_view(request):
 
 
 ##### Pytest 2.6 & 3.6 Coverage Report - 100%, 100%
-
-
-##[My Blog on Heroku](https://carson-tech-blog-fun-times.herokuapp.com/)
 
 ## Step 2
 
@@ -188,3 +188,5 @@ def create_view(request):
         return HTTPFound(request.route_url('home'))
 ```
 ##### Pytest 2.6 & 3.6 Coverage Report - 87%, 87%
+
+**Resources Used:** Pytest, pytest-cov, the Pyramid Framework, and cookiecutter.
