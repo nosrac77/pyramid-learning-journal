@@ -5,7 +5,7 @@ from pyramid.security import remember, forget
 from learning_journal.security import check_credentials
 
 
-@view_config(route_name="home", renderer="learning_journal:templates/journal_entries.jinja2")
+@view_config(route_name="home", renderer="learning_journal:templates/journal_entries.jinja2", require_csrf=False)
 def list_view(request):
     """Function that generates list of journal entries."""
     entries = request.dbsession.query(Entry).all()
@@ -15,7 +15,7 @@ def list_view(request):
     }
 
 
-@view_config(route_name="details", renderer="learning_journal:templates/details.jinja2")
+@view_config(route_name="details", renderer="learning_journal:templates/details.jinja2", require_csrf=False)
 def detail_view(request):
     """Function that generates single journal entry."""
     from pyramid.httpexceptions import HTTPNotFound
