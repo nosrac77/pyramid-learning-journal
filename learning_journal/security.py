@@ -9,7 +9,7 @@ import os
 
 def includeme(config):
     """Security config."""
-    session_secret = os.environ.get("SESSION_SECRET")
+    session_secret = os.environ.get("SESSION_SECRET", "secrettime")
     session_factory = SignedCookieSessionFactory(session_secret)
     auth_secret = os.environ.get("AUTH_SECRET")
     authn_policy = AuthTktAuthenticationPolicy(
