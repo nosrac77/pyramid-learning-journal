@@ -270,7 +270,8 @@ def test_login_return_200_if_proper_credentials(testapp):
     """Function that tests if login view returns 200 if proper parameters are
     given."""
     response = testapp.post('/login', params={'username': 'AUTH_USERNAME',
-                                              'password': 'AUTH_PASSWORD'})
+                                              'password': 'AUTH_PASSWORD',
+                                              'token': testapp.html.find('input', {'name': 'csrf_token'}).attrs['name']})
     assert response.status_code == 200
 
 
@@ -280,10 +281,14 @@ def test_detail_and_update_return_403_when_user_logged_out(testapp):
     assert testapp.get('/journal/1/edit-entry', status=403)
 
 
-def test_logout_view(testapp):
-    """Function to test if creation/update returns 403 if user logged out."""
-    assert testapp.get('/journal/new-entry', status=403)
-    assert testapp.get('/journal/1/edit-entry', status=403)
+def test_logged_in_view(testapp):
+    """Function to test if creation/update returns 200 OK response
+    if user logged in."""
+    response = testapp.post('/login', params={'username': 'AUTH_USERNAME',
+                                              'password': 'AUTH_PASSWORD'})
+    assert response.status_code == 200
+    assert testapp.get('/journal/new-entry').status_code == 200
+    assert testapp.get('/journal/1/edit-entry').status_code == 200
 
 
 #  when testing csrf stuff! token = response.html.find('input', {'name': 'csrf_token'}).attrs['name'] then include a 'csrf_token' key with a value of token (thing you defined above) in the response dictionary! The token MUST be included in every post request!

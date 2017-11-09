@@ -57,6 +57,8 @@ def update_view(request):
 def create_view(request):
     """Function that updates existing view."""
     from pyramid.httpexceptions import HTTPFound
+    if not request.authenticated_userid:
+        return HTTPFound(location=request.route_url('403'))
     if request.method == 'GET':
         return {
             "title": "Create"
@@ -74,7 +76,7 @@ def create_view(request):
 
 
 @view_config(route_name="login",
-             renderer="learning_journal:templates/login.jinja")
+             renderer="learning_journal:templates/login.jinja2")
 def login_view(request):
     """Allow authenticated users access to certain pages."""
     from pyramid.httpexceptions import HTTPFound
@@ -93,3 +95,9 @@ def logout_view(request):
     from pyramid.httpexceptions import HTTPFound
     headers = forget(request)
     return HTTPFound(request.route_url('home'), headers=headers)
+
+
+@view_config(route_name="403", renderer="learning_journal:templates/403.jinja2")
+def unauthourized_view(request):
+    request.response.status = 403
+    return {}

@@ -20,7 +20,7 @@ def includeme(config):
     authz_policy = ACLAuthorizationPolicy()
     config.set_authorization_policy(authz_policy)
     config.set_session_factory(session_factory)
-    config.set_default_crsf_options(require_csrf=True)
+    config.set_default_csrf_options(require_csrf=True)
     config.set_default_permission("view")
     config.set_root_factory(MyRoot)
 
