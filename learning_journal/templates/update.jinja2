@@ -2,6 +2,7 @@
 
 {% block content %}
     <form id="contact-form" class="user-form" method='post'>
+        <input type='hidden' name='csrf_token' value='{{ request.session.get_csrf_token() }}'>
         <h4 class="form-header">Editing Time</h4>
         <p class="section-text-medium">Changed your mind?</p>
         <p class="section-text-small">See this is why you can't drink and journal. Couple shots of whiskey and you get all political. Well, me, sort out those typos or changes of heart here.</p>
