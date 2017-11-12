@@ -253,26 +253,27 @@ def test_create_view_adds_new_Entry_object_to_database(dummy_request, db_session
     first_entry = {
         'title': 'Test',
         'creation_date': '01/23/45',
-        'body': 'Test should pass!'
+        'body': 'Test should pass!',
     }
     dummy_request.method = 'POST'
     dummy_request.POST = first_entry
     create_view(dummy_request)
-    response = dummy_request.dbsession.query(Entry).get(1)
+    db_response = dummy_request.dbsession.query(Entry).get(1)
     assert len(dummy_request.dbsession.query(Entry).all()) == 1
-    assert str(response) == '<Entry: {}>.format(self.title)'
-    assert response.title == 'Test'
-    assert response.creation_date == '01/23/45'
-    assert response.body == 'Test should pass!'
+    assert str(db_response) == '<Entry: {}>.format(self.title)'
+    assert db_response.title == 'Test'
+    assert db_response.creation_date == '01/23/45'
+    assert db_response.body == 'Test should pass!'
 
 
-def test_login_return_200_if_proper_credentials(testapp):
-    """Function that tests if login view returns 200 if proper parameters are
+def test_login_return_302_if_proper_credentials(testapp):
+    """Function that tests if login view returns 302 if proper parameters are
     given."""
-    response = testapp.post('/login', params={'username': 'AUTH_USERNAME',
-                                              'password': 'AUTH_PASSWORD',
-                                              'token': testapp.html.find('input', {'name': 'csrf_token'}).attrs['name']})
-    assert response.status_code == 200
+    token_get_request = testapp.get('/login')
+    token = token_get_request.html.find('input', {'name': 'csrf_token'}).attrs['value']
+    assert testapp.post('/login', {'username': 'nosrac77',
+                                   'password': 'Skrillexfan7',
+                                   'csrf_token': token}, status=302)
 
 
 def test_detail_and_update_return_403_when_user_logged_out(testapp):
@@ -281,14 +282,35 @@ def test_detail_and_update_return_403_when_user_logged_out(testapp):
     assert testapp.get('/journal/1/edit-entry', status=403)
 
 
-def test_logged_in_view(testapp):
-    """Function to test if creation/update returns 200 OK response
-    if user logged in."""
-    response = testapp.post('/login', params={'username': 'AUTH_USERNAME',
-                                              'password': 'AUTH_PASSWORD'})
-    assert response.status_code == 200
-    assert testapp.get('/journal/new-entry').status_code == 200
-    assert testapp.get('/journal/1/edit-entry').status_code == 200
+def test_logged_in_view_with_csrf_token_and_auth_redirects_to_home(testapp):
+    """Function to test if logging in to site given proper credentials and
+    a csrf token redirects to home page."""
+    token_get_request = testapp.get('/login')
+    token = token_get_request.html.find('input', {'name': 'csrf_token'}).attrs['value']
+    response = testapp.post('/login', {'username': 'nosrac77',
+                                       'password': 'Skrillexfan7',
+                                       'csrf_token': token})
+    assert response.location == 'http://localhost/'
 
 
-#  when testing csrf stuff! token = response.html.find('input', {'name': 'csrf_token'}).attrs['name'] then include a 'csrf_token' key with a value of token (thing you defined above) in the response dictionary! The token MUST be included in every post request!
+def test_post_requests_return_400_if_no_csrf_token_supplied_and_user_logged_in(testapp):
+    """Function to test if logging in to site given proper credentials and
+    a csrf token redirects to home page."""
+    token_get_request = testapp.get('/login')
+    token = token_get_request.html.find('input', {'name': 'csrf_token'}).attrs['value']
+    assert testapp.post('/login', {'username': 'nosrac77',
+                                   'password': 'Skrillexfan7',
+                                   'csrf_token': token})
+    assert testapp.post('/journal/new-entry', status=400)
+    assert testapp.post('/journal/5/edit-entry', status=400)
+
+
+def test_logging_out_after_log_in_redirects_to_home(testapp):
+    """Function to test if logging in to site given proper credentials and
+    a csrf token redirects to home page."""
+    token_get_request = testapp.get('/login')
+    token = token_get_request.html.find('input', {'name': 'csrf_token'}).attrs['value']
+    assert testapp.post('/login', {'username': 'nosrac77',
+                                   'password': 'Skrillexfan7',
+                                   'csrf_token': token})
+    assert testapp.get('/logout').location == 'http://localhost/'
