@@ -15,7 +15,8 @@ from ..models import (
     get_session_factory,
     get_tm_session,
     )
-from ..models import MyModel
+from ..models import Entry
+from ..data.journal_entries import JOURNAL_ENTRIES
 
 
 def usage(argv):
@@ -34,12 +35,20 @@ def main(argv=sys.argv):
     settings = get_appsettings(config_uri, options=options)
 
     engine = get_engine(settings)
+    Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
     session_factory = get_session_factory(engine)
 
     with transaction.manager:
         dbsession = get_tm_session(session_factory, transaction.manager)
-
-        model = MyModel(name='one', value=1)
-        dbsession.add(model)
+        entries = []
+        for entry in JOURNAL_ENTRIES:
+            entries.append(
+                Entry(
+                    title=entry['title'],
+                    body=entry['body'],
+                    creation_date=entry['creation_date']
+                )
+            )
+        dbsession.add_all(entries)

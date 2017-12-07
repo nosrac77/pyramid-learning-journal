@@ -60,4 +60,3 @@ JOURNAL_ENTRIES = [{"id": 1,
                     "creation_date": "Tuesday, 31 October, 2017, 10:39 pm",
                     "body": "Hopefully by the end of tomorrow night I won't have to post here anymore. Servers were a pain, as were binary heaps. I don't feel like the assignments themselves were all that complicated, but with the addition of organizing group project ideas and implementations I think I'm starting to feel just a bit overwhelmed. But not by much (yet). A hot plate of food and a good night's rest is in order."
                     }]
-
