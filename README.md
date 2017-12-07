@@ -1,5 +1,7 @@
 # Pyramid Learning Journal
 
+[Site](https://carson-tech-blog-fun-times.herokuapp.com)
+
 ## Step 1
 
 ### Views/Routes Used:
