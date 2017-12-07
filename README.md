@@ -2,7 +2,6 @@
 
 ## Step 1
 
-### Views/Routes Used:
 ```python
 def list_view(request):
     """Function that generates list of journal entries."""
@@ -25,7 +24,6 @@ def update_view(request):
         return Response(f.read())
 ```
 
-
 ##### Pytest 2.6 & 3.6 Coverage Report - 100%, 100%
 
 
@@ -34,6 +32,7 @@ def update_view(request):
 ## Step 2
 
 ### Views/Routes Used:
+
 ```python
 @view_config(route_name="home", renderer="learning_journal:templates/journal_entries.jinja2")
 def list_view(request):
